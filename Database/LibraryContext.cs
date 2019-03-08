@@ -29,5 +29,8 @@ namespace LongLibrary
     public virtual DbSet<Publisher> Publishers { get; set; }
     public virtual DbSet<LibraryMember> LibraryMembers { get; set; }
     public virtual DbSet<CheckoutLog> CheckoutLogs { get; set; }
+    public virtual DbSet<Link> Links { get; set; }
+    public virtual DbSet<Excerpt> Excerpts { get; set; }
+    public virtual DbSet<EBook> EBooks { get; set; }
   }
 }

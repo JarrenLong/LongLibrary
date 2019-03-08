@@ -56,19 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201903082012193_InitialDB.cs" />
-    <Compile Include="Migrations\201903082012193_InitialDB.Designer.cs">
-      <DependentUpon>201903082012193_InitialDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201903082054498_Member-Checkout.cs" />
-    <Compile Include="Migrations\201903082054498_Member-Checkout.Designer.cs">
-      <DependentUpon>201903082054498_Member-Checkout.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemberListForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MemberListForm.Designer.cs">
       <DependentUpon>MemberListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201903082259540_InitialDB.cs" />
+    <Compile Include="Migrations\201903082259540_InitialDB.Designer.cs">
+      <DependentUpon>201903082259540_InitialDB.cs</DependentUpon>
     </Compile>
     <Compile Include="MyLibraryForm.cs">
       <SubType>Form</SubType>
@@ -93,6 +89,8 @@
     <Compile Include="EnterISBNForm.Designer.cs">
       <DependentUpon>EnterISBNForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tables\EBook.cs" />
+    <Compile Include="Tables\Excerpt.cs" />
     <Compile Include="Tables\Identifiers.cs" />
     <Compile Include="Database\LibraryConfiguration.cs" />
     <Compile Include="Database\LibraryContext.cs" />
@@ -102,6 +100,7 @@
     <Compile Include="Tables\Publisher.cs" />
     <Compile Include="Tables\PublishPlace.cs" />
     <Compile Include="Tables\CheckoutLog.cs" />
+    <Compile Include="Tables\Link.cs" />
     <Compile Include="Tables\Unmatched.cs" />
     <Compile Include="Tables\Subject.cs" />
     <Compile Include="Tables\SubjectPeople.cs" />
@@ -110,14 +109,11 @@
     <EmbeddedResource Include="EnterISBNForm.resx">
       <DependentUpon>EnterISBNForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903082012193_InitialDB.resx">
-      <DependentUpon>201903082012193_InitialDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201903082054498_Member-Checkout.resx">
-      <DependentUpon>201903082054498_Member-Checkout.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MemberListForm.resx">
       <DependentUpon>MemberListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903082259540_InitialDB.resx">
+      <DependentUpon>201903082259540_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MyLibraryForm.resx">
       <DependentUpon>MyLibraryForm.cs</DependentUpon>

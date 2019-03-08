@@ -7,13 +7,13 @@ namespace LongLibrary
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class MemberCheckout : IMigrationMetadata
+    public sealed partial class InitialDB : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MemberCheckout));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialDB));
         
         string IMigrationMetadata.Id
         {
-            get { return "201903082054498_Member-Checkout"; }
+            get { return "201903082259540_InitialDB"; }
         }
         
         string IMigrationMetadata.Source

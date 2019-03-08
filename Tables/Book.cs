@@ -10,6 +10,8 @@ namespace LongLibrary
   {
     [JsonProperty("title")]
     public string Title { get; set; }
+    [JsonProperty("subtitle")]
+    public string Subtitle { get; set; }
     [JsonProperty("url")]
     public string URL { get; set; }
     [JsonProperty("notes")]
@@ -45,6 +47,12 @@ namespace LongLibrary
     public virtual List<PublishPlace> PublishPlaces { get; set; }
     [JsonProperty("subject_times")]
     public virtual List<SubjectTime> SubjectTimes { get; set; }
+    [JsonProperty("links")]
+    public virtual List<Link> Links { get; set; }
+    [JsonProperty("excerpts")]
+    public virtual List<Excerpt> Excerpts { get; set; }
+    [JsonProperty("ebooks")]
+    public virtual List<EBook> EBooks { get; set; }
 
     [JsonIgnore, NotMapped]
     public string AuthorString { get { return Authors == null ? "" : string.Join(", ", Authors.Select(x => x.Name)); } }
