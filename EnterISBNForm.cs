@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Windows.Forms;
@@ -17,12 +18,21 @@ namespace LongLibrary
 
     private void ButtonLookup_Click(object sender, EventArgs e)
     {
+      labelStatus.Text = "Looking up ...";
+      labelStatus.ForeColor = Color.Blue;
+
       bool ret = LookupISBN(TextBoxISBN.Text);
 
       if (!ret)
-        MessageBox.Show(string.Format("Book with barcode {0} not found!", TextBoxISBN.Text));
+      {
+        labelStatus.Text = "Error!";
+        labelStatus.ForeColor = Color.Red;
+      }
       else
-        MessageBox.Show("Book was found and added to the library.");
+      {
+        labelStatus.Text = "Added!";
+        labelStatus.ForeColor = Color.Green;
+      }
 
       TextBoxISBN.Text = "";
       TextBoxISBN.Focus();
