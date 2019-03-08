@@ -42,6 +42,8 @@
       this.dataGridViewCheckoutLog = new System.Windows.Forms.DataGridView();
       this.buttonCheckout = new System.Windows.Forms.Button();
       this.buttonCheckIn = new System.Windows.Forms.Button();
+      this.checkBoxCheckedOut = new System.Windows.Forms.CheckBox();
+      this.checkBoxPastDue = new System.Windows.Forms.CheckBox();
       ((System.ComponentModel.ISupportInitialize)(this.DataGridViewBookList)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCover)).BeginInit();
       this.toolStrip1.SuspendLayout();
@@ -153,6 +155,8 @@
       // 
       // splitContainer1.Panel2
       // 
+      this.splitContainer1.Panel2.Controls.Add(this.checkBoxPastDue);
+      this.splitContainer1.Panel2.Controls.Add(this.checkBoxCheckedOut);
       this.splitContainer1.Panel2.Controls.Add(this.buttonCheckIn);
       this.splitContainer1.Panel2.Controls.Add(this.buttonCheckout);
       this.splitContainer1.Panel2.Controls.Add(this.dataGridViewCheckoutLog);
@@ -194,6 +198,26 @@
       this.buttonCheckIn.UseVisualStyleBackColor = true;
       this.buttonCheckIn.Click += new System.EventHandler(this.buttonCheckIn_Click);
       // 
+      // checkBoxCheckedOut
+      // 
+      this.checkBoxCheckedOut.AutoSize = true;
+      this.checkBoxCheckedOut.Location = new System.Drawing.Point(331, 88);
+      this.checkBoxCheckedOut.Name = "checkBoxCheckedOut";
+      this.checkBoxCheckedOut.Size = new System.Drawing.Size(134, 17);
+      this.checkBoxCheckedOut.TabIndex = 6;
+      this.checkBoxCheckedOut.Text = "Is Book Checked Out?";
+      this.checkBoxCheckedOut.UseVisualStyleBackColor = true;
+      // 
+      // checkBoxPastDue
+      // 
+      this.checkBoxPastDue.AutoSize = true;
+      this.checkBoxPastDue.Location = new System.Drawing.Point(331, 111);
+      this.checkBoxPastDue.Name = "checkBoxPastDue";
+      this.checkBoxPastDue.Size = new System.Drawing.Size(115, 17);
+      this.checkBoxPastDue.TabIndex = 7;
+      this.checkBoxPastDue.Text = "Is Book Past Due?";
+      this.checkBoxPastDue.UseVisualStyleBackColor = true;
+      // 
       // MyLibraryForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,6 +234,7 @@
       this.toolStrip1.PerformLayout();
       this.splitContainer1.Panel1.ResumeLayout(false);
       this.splitContainer1.Panel2.ResumeLayout(false);
+      this.splitContainer1.Panel2.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
       this.splitContainer1.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCheckoutLog)).EndInit();
@@ -232,5 +257,7 @@
     private System.Windows.Forms.DataGridView dataGridViewCheckoutLog;
     private System.Windows.Forms.Button buttonCheckIn;
     private System.Windows.Forms.Button buttonCheckout;
+    private System.Windows.Forms.CheckBox checkBoxPastDue;
+    private System.Windows.Forms.CheckBox checkBoxCheckedOut;
   }
 }

@@ -37,12 +37,16 @@ namespace LongLibrary
               labelTitle.Text = "";
               labelAuthor.Text = "";
               pictureBoxCover.Image = null;
-
+              checkBoxCheckedOut.Checked = false;
+              checkBoxPastDue.Checked = false;
             }
             else
             {
               labelTitle.Text = currentBook.Title;
               labelAuthor.Text = currentBook.AuthorString;
+              checkBoxCheckedOut.Checked = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null;
+              DateTime now = DateTime.Now;
+              checkBoxPastDue.Checked = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.DueBackAt <= now).ToList().LastOrDefault() != null; 
 
               if (currentBook.Cover != null)
               {
@@ -102,7 +106,7 @@ namespace LongLibrary
       if (currentBook == null)
         return;
 
-      if(ctx.CheckoutLogs.Where(x => x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null)
+      if(ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null)
       {
         MessageBox.Show("This book is already checked out!");
         return;
@@ -123,6 +127,8 @@ namespace LongLibrary
         LibraryMember = member
       });
       ctx.SaveChanges();
+
+      checkBoxCheckedOut.Checked = !checkBoxCheckedOut.Checked;
     }
 
     private void buttonCheckIn_Click(object sender, EventArgs e)
@@ -130,7 +136,7 @@ namespace LongLibrary
       if (currentBook == null)
         return;
 
-      var lastCheckout = ctx.CheckoutLogs.Where(x => x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault();
+      var lastCheckout = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault();
       if (lastCheckout == null)
         MessageBox.Show("This book is not currently checked out!");
       else
@@ -139,6 +145,8 @@ namespace LongLibrary
         ctx.SaveChanges();
 
         MessageBox.Show("This book has been returned.");
+
+        checkBoxCheckedOut.Checked = !checkBoxCheckedOut.Checked;
       }
     }
   }
