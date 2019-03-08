@@ -27,5 +27,7 @@ namespace LongLibrary
     public virtual DbSet<Classifications> Classifications { get; set; }
     public virtual DbSet<Identifiers> Identifiers { get; set; }
     public virtual DbSet<Publisher> Publishers { get; set; }
+    public virtual DbSet<LibraryMember> LibraryMembers { get; set; }
+    public virtual DbSet<CheckoutLog> CheckoutLogs { get; set; }
   }
 }

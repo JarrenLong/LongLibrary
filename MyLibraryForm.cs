@@ -10,6 +10,9 @@ namespace LongLibrary
 {
   public partial class MyLibraryForm : Form
   {
+    private LibraryContext ctx = new LibraryContext();
+    private Book currentBook = null;
+
     public MyLibraryForm()
     {
       InitializeComponent();
@@ -27,25 +30,33 @@ namespace LongLibrary
           {
             int selId = ((Book)it).Id;
 
-            using (var ctx = new LibraryContext())
+            currentBook = ctx.Books.FirstOrDefault(x => x.Id == selId);
+            if (currentBook == null)
             {
-              var sel = ctx.Books.FirstOrDefault(x => x.Id == selId);
-              labelTitle.Text = sel.Title;
-              labelAuthor.Text = sel.AuthorString;
+              dataGridViewCheckoutLog.DataSource = null;
+              labelTitle.Text = "";
+              labelAuthor.Text = "";
+              pictureBoxCover.Image = null;
 
-              if (sel.Cover != null)
+            }
+            else
+            {
+              labelTitle.Text = currentBook.Title;
+              labelAuthor.Text = currentBook.AuthorString;
+
+              if (currentBook.Cover != null)
               {
                 try
                 {
                   string tempImg = Path.GetTempFileName();
                   string toDl = "";
 
-                  if (!string.IsNullOrEmpty(sel.Cover.Large))
-                    toDl = sel.Cover.Large;
-                  else if (!string.IsNullOrEmpty(sel.Cover.Medium))
-                    toDl = sel.Cover.Medium;
-                  else if (!string.IsNullOrEmpty(sel.Cover.Small))
-                    toDl = sel.Cover.Small;
+                  if (!string.IsNullOrEmpty(currentBook.Cover.Large))
+                    toDl = currentBook.Cover.Large;
+                  else if (!string.IsNullOrEmpty(currentBook.Cover.Medium))
+                    toDl = currentBook.Cover.Medium;
+                  else if (!string.IsNullOrEmpty(currentBook.Cover.Small))
+                    toDl = currentBook.Cover.Small;
 
                   if (string.IsNullOrEmpty(toDl))
                     throw new Exception();
@@ -57,6 +68,8 @@ namespace LongLibrary
                 }
                 catch { pictureBoxCover.Image = null; }
               }
+
+              dataGridViewCheckoutLog.DataSource = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id).OrderByDescending(x => x.CheckedOutAt).ToList();
             }
           }
         }
@@ -67,17 +80,66 @@ namespace LongLibrary
     {
       DataGridViewBookList.AutoGenerateColumns = false;
 
-      using (var ctx = new LibraryContext())
-        DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
+      DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
     }
 
-    private void buttonAddNew_Click(object sender, EventArgs e)
+    private void toolStripButtonAddNewBook_Click(object sender, EventArgs e)
     {
       using (var frm = new EnterISBNForm())
         frm.ShowDialog();
 
-      using (var ctx = new LibraryContext())
-        DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
+      DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
+    }
+
+    private void toolStripButtonViewMembers_Click(object sender, EventArgs e)
+    {
+      using (var frm = new MemberListForm())
+        frm.ShowDialog();
+    }
+
+    private void buttonCheckout_Click(object sender, EventArgs e)
+    {
+      if (currentBook == null)
+        return;
+
+      if(ctx.CheckoutLogs.Where(x => x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null)
+      {
+        MessageBox.Show("This book is already checked out!");
+        return;
+      }
+
+      int memberId = 0;
+      using (var frm = new PickMemberForm())
+        if (frm.ShowDialog() == DialogResult.OK)
+          memberId = frm.MemberId;
+
+      if (memberId == 0)
+        return;
+
+      var member = ctx.LibraryMembers.FirstOrDefault(x => x.Id == memberId);
+      ctx.CheckoutLogs.Add(new CheckoutLog()
+      {
+        Book = currentBook,
+        LibraryMember = member
+      });
+      ctx.SaveChanges();
+    }
+
+    private void buttonCheckIn_Click(object sender, EventArgs e)
+    {
+      if (currentBook == null)
+        return;
+
+      var lastCheckout = ctx.CheckoutLogs.Where(x => x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault();
+      if (lastCheckout == null)
+        MessageBox.Show("This book is not currently checked out!");
+      else
+      {
+        lastCheckout.ReturnedAt = DateTime.Now;
+        ctx.SaveChanges();
+
+        MessageBox.Show("This book has been returned.");
+      }
     }
   }
 }

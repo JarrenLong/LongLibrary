@@ -60,11 +60,27 @@
     <Compile Include="Migrations\201903082012193_InitialDB.Designer.cs">
       <DependentUpon>201903082012193_InitialDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201903082054498_Member-Checkout.cs" />
+    <Compile Include="Migrations\201903082054498_Member-Checkout.Designer.cs">
+      <DependentUpon>201903082054498_Member-Checkout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MemberListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MemberListForm.Designer.cs">
+      <DependentUpon>MemberListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyLibraryForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MyLibraryForm.Designer.cs">
       <DependentUpon>MyLibraryForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PickMemberForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PickMemberForm.Designer.cs">
+      <DependentUpon>PickMemberForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Tables\Author.cs" />
     <Compile Include="Tables\Book.cs" />
@@ -82,8 +98,10 @@
     <Compile Include="Database\LibraryContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tables\LibraryMember.cs" />
     <Compile Include="Tables\Publisher.cs" />
     <Compile Include="Tables\PublishPlace.cs" />
+    <Compile Include="Tables\CheckoutLog.cs" />
     <Compile Include="Tables\Unmatched.cs" />
     <Compile Include="Tables\Subject.cs" />
     <Compile Include="Tables\SubjectPeople.cs" />
@@ -95,8 +113,17 @@
     <EmbeddedResource Include="Migrations\201903082012193_InitialDB.resx">
       <DependentUpon>201903082012193_InitialDB.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201903082054498_Member-Checkout.resx">
+      <DependentUpon>201903082054498_Member-Checkout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MemberListForm.resx">
+      <DependentUpon>MemberListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyLibraryForm.resx">
       <DependentUpon>MyLibraryForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PickMemberForm.resx">
+      <DependentUpon>PickMemberForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
