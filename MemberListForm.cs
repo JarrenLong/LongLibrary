@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Net;
-using System.IO;
 
 namespace LongLibrary
 {
   public partial class MemberListForm : Form
   {
-    private LibraryContext ctx = new LibraryContext();
+    private LibraryContext db = new LibraryContext();
 
     public MemberListForm()
     {
@@ -19,7 +16,7 @@ namespace LongLibrary
 
     private void DataGridViewBookList_SelectionChanged(object sender, EventArgs e)
     {
-      ctx.SaveChanges();
+      db.SaveChanges();
       textBoxEmail.DataBindings.Clear();
       textBoxPhone.DataBindings.Clear();
       textBoxLastName.DataBindings.Clear();
@@ -40,7 +37,7 @@ namespace LongLibrary
           if (it != null)
           {
             int selId = ((LibraryMember)it).Id;
-            var sel = ctx.LibraryMembers.FirstOrDefault(x => x.Id == selId);
+            var sel = db.LibraryMembers.FirstOrDefault(x => x.Id == selId);
             //labelTitle.Text = sel.Title;
             //labelAuthor.Text = sel.AuthorString;
             if (sel != null)
@@ -63,24 +60,24 @@ namespace LongLibrary
 
     private void MyLibrary_Shown(object sender, EventArgs e)
     {
-      DataGridViewBookList.DataSource = ctx.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
+      DataGridViewBookList.DataSource = db.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
     }
 
     private void toolStripButtonAddMember_Click(object sender, EventArgs e)
     {
-      var sel = ctx.LibraryMembers.Add(new LibraryMember()
+      var sel = db.LibraryMembers.Add(new LibraryMember()
       {
         FirstName = "Member",
         LastName = "A New"
       });
 
-      ctx.SaveChanges();
-      DataGridViewBookList.DataSource = ctx.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
+      db.SaveChanges();
+      DataGridViewBookList.DataSource = db.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
     }
 
     private void buttonSave_Click(object sender, EventArgs e)
     {
-      ctx.SaveChanges();
+      db.SaveChanges();
       textBoxEmail.DataBindings.Clear();
       textBoxPhone.DataBindings.Clear();
       textBoxLastName.DataBindings.Clear();

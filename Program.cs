@@ -12,7 +12,7 @@ namespace LongLibrary
     [STAThread]
     static void Main()
     {
-      using (var ctx = new LibraryContext())
+      using (var db = new LibraryContext())
       {
         // Run a database migration, then store the new app version
         var configuration = new LibraryConfiguration();

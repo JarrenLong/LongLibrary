@@ -7,7 +7,7 @@ namespace LongLibrary
 {
   public partial class PickMemberForm : Form
   {
-    private LibraryContext ctx = new LibraryContext();
+    private LibraryContext db = new LibraryContext();
     public int MemberId = 0;
 
     public PickMemberForm()
@@ -17,7 +17,7 @@ namespace LongLibrary
 
     private void PickMemberForm_Shown(object sender, EventArgs e)
     {
-      comboBoxMembers.DataSource = ctx.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
+      comboBoxMembers.DataSource = db.LibraryMembers.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
       comboBoxMembers.DisplayMember = "LastName";
       comboBoxMembers.ValueMember = "Id";
     }

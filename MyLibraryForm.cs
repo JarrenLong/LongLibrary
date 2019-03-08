@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using System.Net;
 using System.IO;
+using System.Linq;
+using System.Net;
+using System.Windows.Forms;
 
 namespace LongLibrary
 {
   public partial class MyLibraryForm : Form
   {
-    private LibraryContext ctx = new LibraryContext();
+    private LibraryContext db = new LibraryContext();
     private Book currentBook = null;
 
     public MyLibraryForm()
@@ -30,7 +30,7 @@ namespace LongLibrary
           {
             int selId = ((Book)it).Id;
 
-            currentBook = ctx.Books.FirstOrDefault(x => x.Id == selId);
+            currentBook = db.Books.FirstOrDefault(x => x.Id == selId);
             if (currentBook == null)
             {
               dataGridViewCheckoutLog.DataSource = null;
@@ -44,9 +44,9 @@ namespace LongLibrary
             {
               labelTitle.Text = currentBook.Title;
               labelAuthor.Text = currentBook.AuthorString;
-              checkBoxCheckedOut.Checked = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null;
+              checkBoxCheckedOut.Checked = db.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null;
               DateTime now = DateTime.Now;
-              checkBoxPastDue.Checked = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.DueBackAt <= now).ToList().LastOrDefault() != null; 
+              checkBoxPastDue.Checked = db.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.DueBackAt <= now).ToList().LastOrDefault() != null; 
 
               if (currentBook.Cover != null)
               {
@@ -73,7 +73,7 @@ namespace LongLibrary
                 catch { pictureBoxCover.Image = null; }
               }
 
-              dataGridViewCheckoutLog.DataSource = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id).OrderByDescending(x => x.CheckedOutAt).ToList();
+              dataGridViewCheckoutLog.DataSource = db.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id).OrderByDescending(x => x.CheckedOutAt).ToList();
             }
           }
         }
@@ -84,7 +84,7 @@ namespace LongLibrary
     {
       DataGridViewBookList.AutoGenerateColumns = false;
 
-      DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
+      DataGridViewBookList.DataSource = db.Books.OrderBy(x => x.Title).ToList();
     }
 
     private void toolStripButtonAddNewBook_Click(object sender, EventArgs e)
@@ -92,7 +92,7 @@ namespace LongLibrary
       using (var frm = new EnterISBNForm())
         frm.ShowDialog();
 
-      DataGridViewBookList.DataSource = ctx.Books.OrderBy(x => x.Title).ToList();
+      DataGridViewBookList.DataSource = db.Books.OrderBy(x => x.Title).ToList();
     }
 
     private void toolStripButtonViewMembers_Click(object sender, EventArgs e)
@@ -106,7 +106,7 @@ namespace LongLibrary
       if (currentBook == null)
         return;
 
-      if(ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null)
+      if(db.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault() != null)
       {
         MessageBox.Show("This book is already checked out!");
         return;
@@ -120,13 +120,13 @@ namespace LongLibrary
       if (memberId == 0)
         return;
 
-      var member = ctx.LibraryMembers.FirstOrDefault(x => x.Id == memberId);
-      ctx.CheckoutLogs.Add(new CheckoutLog()
+      var member = db.LibraryMembers.FirstOrDefault(x => x.Id == memberId);
+      db.CheckoutLogs.Add(new CheckoutLog()
       {
         Book = currentBook,
         LibraryMember = member
       });
-      ctx.SaveChanges();
+      db.SaveChanges();
 
       checkBoxCheckedOut.Checked = !checkBoxCheckedOut.Checked;
     }
@@ -136,13 +136,13 @@ namespace LongLibrary
       if (currentBook == null)
         return;
 
-      var lastCheckout = ctx.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault();
+      var lastCheckout = db.CheckoutLogs.Where(x => x.Book.Id == currentBook.Id && x.CheckedOutAt >= x.ReturnedAt).ToList().LastOrDefault();
       if (lastCheckout == null)
         MessageBox.Show("This book is not currently checked out!");
       else
       {
         lastCheckout.ReturnedAt = DateTime.Now;
-        ctx.SaveChanges();
+        db.SaveChanges();
 
         MessageBox.Show("This book has been returned.");
 
