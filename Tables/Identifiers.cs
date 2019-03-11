@@ -8,6 +8,20 @@ namespace LongLibrary
 {
   public class Identifiers : DbTable
   {
+    public Identifiers()
+    {
+      AlibrisID = new List<string>();
+      LCCN = new List<string>();
+      OpenLibrary = new List<string>();
+      ISBN_10 = new List<string>();
+      ISBN_13 = new List<string>();
+      OCLC = new List<string>();
+      LibraryThing = new List<string>();
+      ProjectGutenberg = new List<string>();
+      Goodreads = new List<string>();
+      PaperbackSwap = new List<string>();
+    }
+
     private List<string> _AlibrisID { get; set; }
     [JsonProperty("alibris_id"), NotMapped]
     public List<string> AlibrisID

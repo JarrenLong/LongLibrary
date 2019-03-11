@@ -8,6 +8,13 @@ namespace LongLibrary
 {
   public class Classifications : DbTable
   {
+    public Classifications()
+    {
+      DeweyDecimal = new List<string>();
+      LC = new List<string>();
+    }
+
+
     private List<string> _DeweyDecimal { get; set; }
     [JsonProperty("dewey_decimal_class"), NotMapped]
     public List<string> DeweyDecimal

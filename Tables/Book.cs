@@ -8,6 +8,21 @@ namespace LongLibrary
 {
   public class Book : DbTable
   {
+    public Book()
+    {
+      Publishers = new List<Publisher>();
+      SubjectPlaces = new List<SubjectPlace>();
+      Subjects = new List<Subject>();
+      SubjectPeople = new List<SubjectPeople>();
+      Authors = new List<Author>();
+      PublishPlaces = new List<PublishPlace>();
+      SubjectTimes = new List<SubjectTime>();
+      Links = new List<Link>();
+      Excerpts = new List<Excerpt>();
+      EBooks = new List<EBook>();
+    }
+
+
     [JsonProperty("title")]
     public string Title { get; set; }
     [JsonProperty("subtitle")]
