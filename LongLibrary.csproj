@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="Tables\EBook.cs" />
     <Compile Include="Tables\Excerpt.cs" />
+    <Compile Include="Tables\GoogleBooksAPI.cs" />
     <Compile Include="Tables\Identifiers.cs" />
     <Compile Include="Database\LibraryConfiguration.cs" />
     <Compile Include="Database\LibraryContext.cs" />

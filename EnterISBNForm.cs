@@ -21,7 +21,22 @@ namespace LongLibrary
       labelStatus.Text = "Looking up ...";
       labelStatus.ForeColor = Color.Blue;
 
+      // Try checking Google Books API first
       bool ret = LookupISBN_GoogleBooks(TextBoxISBN.Text);
+      if (!ret)
+      {
+        // If book was not found, check OpenLibrary API
+        ret = LookupISBN_OpenLibrary(TextBoxISBN.Text);
+        if (!ret)
+        {
+          // If we still haven't found a referene, store the ISBN for later use
+          using (var ctx = new LibraryContext())
+          {
+            ctx.Unmatched.Add(new Unmatched() { Barcode = TextBoxISBN.Text });
+            ctx.SaveChanges();
+          }
+        }
+      }
 
       if (!ret)
       {
@@ -71,12 +86,6 @@ namespace LongLibrary
             ctx.Books.Add(b);
 
           ret = true;
-        }
-
-        if (!ret)
-        {
-          // Could not find a match, store it for later
-          ctx.Unmatched.Add(new Unmatched() { Barcode = isbn });
         }
 
         ctx.SaveChanges();
@@ -161,12 +170,6 @@ namespace LongLibrary
 
             ctx.SaveChanges();
           }
-
-          if (!ret)
-          {
-            // Could not find a match, store it for later
-            ctx.Unmatched.Add(new Unmatched() { Barcode = isbn });
-          }
         }
       }
       catch
@@ -177,112 +180,4 @@ namespace LongLibrary
       return ret;
     }
   }
-
-  #region Google Books API
-
-  public class IndustryIdentifier
-  {
-    public string type { get; set; }
-    public string identifier { get; set; }
-  }
-
-  public class ReadingModes
-  {
-    public bool text { get; set; }
-    public bool image { get; set; }
-  }
-
-  public class PanelizationSummary
-  {
-    public bool containsEpubBubbles { get; set; }
-    public bool containsImageBubbles { get; set; }
-  }
-
-  public class ImageLinks
-  {
-    public string smallThumbnail { get; set; }
-    public string thumbnail { get; set; }
-  }
-
-  public class VolumeInfo
-  {
-    public string title { get; set; }
-    public string subtitle { get; set; }
-    public List<string> authors { get; set; }
-    public string publisher { get; set; }
-    public string publishedDate { get; set; }
-    public string description { get; set; }
-    public List<IndustryIdentifier> industryIdentifiers { get; set; }
-    public ReadingModes readingModes { get; set; }
-    public int pageCount { get; set; }
-    public string printType { get; set; }
-    public List<string> categories { get; set; }
-    public double averageRating { get; set; }
-    public int ratingsCount { get; set; }
-    public string maturityRating { get; set; }
-    public bool allowAnonLogging { get; set; }
-    public string contentVersion { get; set; }
-    public PanelizationSummary panelizationSummary { get; set; }
-    public ImageLinks imageLinks { get; set; }
-    public string language { get; set; }
-    public string previewLink { get; set; }
-    public string infoLink { get; set; }
-    public string canonicalVolumeLink { get; set; }
-  }
-
-  public class SaleInfo
-  {
-    public string country { get; set; }
-    public string saleability { get; set; }
-    public bool isEbook { get; set; }
-  }
-
-  public class Epub
-  {
-    public bool isAvailable { get; set; }
-  }
-
-  public class Pdf
-  {
-    public bool isAvailable { get; set; }
-  }
-
-  public class AccessInfo
-  {
-    public string country { get; set; }
-    public string viewability { get; set; }
-    public bool embeddable { get; set; }
-    public bool publicDomain { get; set; }
-    public string textToSpeechPermission { get; set; }
-    public Epub epub { get; set; }
-    public Pdf pdf { get; set; }
-    public string webReaderLink { get; set; }
-    public string accessViewStatus { get; set; }
-    public bool quoteSharingAllowed { get; set; }
-  }
-
-  public class SearchInfo
-  {
-    public string textSnippet { get; set; }
-  }
-
-  public class Item
-  {
-    public string kind { get; set; }
-    public string id { get; set; }
-    public string etag { get; set; }
-    public string selfLink { get; set; }
-    public VolumeInfo volumeInfo { get; set; }
-    public SaleInfo saleInfo { get; set; }
-    public AccessInfo accessInfo { get; set; }
-    public SearchInfo searchInfo { get; set; }
-  }
-
-  public class RootObject
-  {
-    public string kind { get; set; }
-    public int totalItems { get; set; }
-    public List<Item> items { get; set; }
-  }
-  #endregion
 }
