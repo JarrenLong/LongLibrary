@@ -6,3 +6,4 @@
 /bin
 /.vs/LongLibrary/v15
 /packages
+*.log
